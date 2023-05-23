@@ -10,12 +10,10 @@ bl_info = {
     "category": "Render",
 }
 
-
 import bpy
 import os
 from mathutils import Vector
 import math
-
 
 def focus_camera_on_object(obj, camera, zoom_factor):
     max_dim = max(obj.dimensions)
@@ -160,7 +158,7 @@ class RENDER_OT_automated_object_renderer(bpy.types.Operator):
             bpy.ops.object.select_all(action='DESELECT')
             obj.select_set(True)
 
-            output_dir = render_settings.output_directory
+            output_dir = bpy.path.abspath(render_settings.output_directory)
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
 
@@ -175,6 +173,8 @@ class RENDER_OT_automated_object_renderer(bpy.types.Operator):
                 if other_obj != obj and other_obj.type == 'MESH':
                     other_obj.hide_render = True
 
+            # Setting the camera angle by giving it a specific position before focusing the object
+            camera_obj.location = (74.82, -65.07, 53.43)
             focus_camera_on_object(obj, camera_obj, render_settings.zoom_factor)
 
             original_use_scene_nodes = scene.use_nodes
@@ -258,7 +258,7 @@ class AutomatedObjectRendererSettings(bpy.types.PropertyGroup):
     output_directory: bpy.props.StringProperty(
         name="Output Directory",
         subtype='DIR_PATH',
-        default="//renders/",
+        default="C:/",
     )
     file_format: bpy.props.EnumProperty(
         name="File Format",
@@ -273,8 +273,8 @@ class AutomatedObjectRendererSettings(bpy.types.PropertyGroup):
         name="Zoom Factor",
         description="Adjust the zoom factor for the camera when rendering objects",
         default=0.1,
-        min=0.05,
-        max=0.5
+        min=0.01,
+        max=0.3
     )
     background_option: bpy.props.EnumProperty(
         name="Background",
@@ -293,8 +293,8 @@ class AutomatedObjectRendererSettings(bpy.types.PropertyGroup):
         max=360
     )
 
-    resolution_x: bpy.props.IntProperty(name="Resolution X", default=1920, min=1)
-    resolution_y: bpy.props.IntProperty(name="Resolution Y", default=1080, min=1)
+    resolution_x: bpy.props.IntProperty(name="Resolution X", default=1000, min=1)
+    resolution_y: bpy.props.IntProperty(name="Resolution Y", default=1000, min=1)
     resolution_percentage: bpy.props.IntProperty(name="Percentage", default=100, min=1, max=100, subtype='PERCENTAGE')
 
 def register():
