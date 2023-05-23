@@ -10,10 +10,23 @@ bl_info = {
     "category": "Render",
 }
 
-import bpy
-import os
-from mathutils import Vector
 import math
+import os
+import bpy
+from mathutils import Vector
+import libs.openpyxl
+from libs.openpyxl.reader.excel import load_workbook
+
+def createImportTemplate(selected_objects):
+    wb = load_workbook('Import Template for Media.xlsx')
+    ws = wb['ProductImages']
+
+    # Insert selected object names into the 'C' column
+    for i, obj in enumerate(selected_objects, start=1):
+        ws['C' + str(i)] = obj.name
+
+    wb.save(r'C:\rendertest\test.xlsx')
+
 
 def focus_camera_on_object(obj, camera, zoom_factor):
     max_dim = max(obj.dimensions)
@@ -226,6 +239,9 @@ class RENDER_OT_automated_object_renderer(bpy.types.Operator):
         world.use_nodes = original_use_nodes
 
         restore_original_node_tree(world, original_node_tree)
+
+        # Create import template excel file
+        createImportTemplate(selected_objects)
 
         # End progress bar
         wm.progress_end()
