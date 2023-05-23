@@ -2,6 +2,11 @@
 
 DEBUG = False
 
+from openpyxl.compat.numbers import NUMPY
+from openpyxl.xml import DEFUSEDXML, LXML
+from openpyxl.workbook import Workbook
+from openpyxl.reader.excel import load_workbook as open
+from openpyxl.reader.excel import load_workbook
 import openpyxl._constants as constants
 
 # Expose constants especially the version number
