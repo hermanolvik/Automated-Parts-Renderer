@@ -8,3 +8,5 @@ There is also an image selector tool for choosing only the best images for each 
 Preview:
 
 ![Screenshot 2023-11-09 at 11 49 59](https://github.com/hermanolvik/Automated-Parts-Renderer/assets/72079200/8cac411d-6023-4d91-a4c7-0ba68ca574f4)
+
+More about Blender: https://www.blender.org
